@@ -5,6 +5,7 @@ using static Model.DTO;
 
 namespace UI.Services
 {
+    // git commit tab
     public class ApiService
     {
         #region Generic
