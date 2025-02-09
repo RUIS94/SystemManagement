@@ -363,7 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # ingnore sensitive file
-SensitiveInfo.xml
-Model/Database.mdf
-Model/Database_log.ldf
-ChatAI.cs
+UI/SensitiveInfo.xml
