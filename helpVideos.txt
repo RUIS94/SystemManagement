@@ -1,0 +1,32 @@
+[
+  {
+    "Feature": "C# Tutorial For Beginners - Learn C# Basics in 1 Hour",
+    "Type": "video",
+    "View": "https://www.youtube.com/watch?v=gfkTfcpWqAY&list=PLTjRvDozrdlz3_FPXwb6lX_HoGXa09Yef"
+  },
+{
+    "Feature": "Brutally honest advice for new .NET Web Developers",
+    "Type": "video",
+    "View": "https://www.youtube.com/watch?v=ohkeYczD1LY"
+  },
+{
+    "Feature": "ASP.NET Core Crash Course - C# App in One Hour",
+    "Type": "video",
+    "View": "https://www.youtube.com/watch?v=BfEjDD8mWYg"
+  },
+{
+    "Feature": "Configuration.Save Method",
+    "Type": "text",
+    "View": "https://learn.microsoft.com/en-us/dotnet/api/system.configuration.configuration.save?view=windowsdesktop-9.0"
+  },
+{
+    "Feature": "DataGridViewImageColumn.Image Property",
+    "Type": "text",
+    "View": "https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.datagridviewimagecolumn.image?view=windowsdesktop-9.0"
+  },
+{
+    "Feature": "Stackoverflow",
+    "Type": "web",
+    "View": "https://stackoverflow.com/"
+  }
+]

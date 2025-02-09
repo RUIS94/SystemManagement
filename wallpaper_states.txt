@@ -1,0 +1,1 @@
+{"WallpaperStates":[{"WallpaperName":"Eagle.jpg","IsSelected":true},{"WallpaperName":"Lake.jpg","IsSelected":true},{"WallpaperName":"Mountain.jpg","IsSelected":true},{"WallpaperName":"Ocean.jpg","IsSelected":true},{"WallpaperName":"Road.jpg","IsSelected":true},{"WallpaperName":"Town.jpg","IsSelected":true}],"TimeInterval":"1min","SelectedWallpaperName":"Eagle.jpg"}

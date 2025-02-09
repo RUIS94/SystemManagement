@@ -1,0 +1,7 @@
+[
+  {
+    "Date": "02/02/2025",
+    "Summary": "Here will add some words for test",
+    "Notes": "02/02/2025 - 20:50 (user):\n\r\nwrite something "
+  }
+]
