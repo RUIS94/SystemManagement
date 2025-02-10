@@ -30,21 +30,21 @@ namespace UI.Forms
             timeLabel.Text = now.ToString("dd/MM/yyyy");
             ToolsControlsPosition();
             exchangeForm.Items.Add("Home Menu" + homePanel);
+            SignOut();
         }
-        private void LockMainButtonPanel(bool lockState)
+        private void SigninConfirm()
         {
-            foreach (Control control in mainBtnPanel.Controls)
+            if (shareFile.ConfirmAction("Please Sign in first", "Sign In"))
             {
-                control.Enabled = !lockState;
+                signBtn.PerformClick();
             }
         }
+
         private void SignOut()
         {
             isUserLoggedIn = false;
             signBtn.Text = "Sign in";
             currentUserRole = string.Empty;
-            LockMainButtonPanel(true);
-            //MessageBox.Show("You have been signed out.");
         }
         public void SetUserLoggedIn(string username, string role)
         {
@@ -52,7 +52,7 @@ namespace UI.Forms
             currentUserRole = role;
             signBtn.Text = "Sign out";
             shareFile.ShowMessage($"Welcome {role} : {username}");
-            LockMainButtonPanel(false);
+            currentUserRole = role;
         }
         private void LockPanel()
         {
@@ -166,14 +166,26 @@ namespace UI.Forms
         #region Forms Control
         private void setBtn_Click(object sender, EventArgs e)
         {
+            mainPanel.Enabled = false;
             SettingForm setform = new SettingForm();
             setform.TopLevel = true;
-            setform.Show();
+            setform.FormClosed += (s, args) => mainPanel.Enabled = true;
+            setform.ShowDialog();
+            //setform.Show();
         }
         private CustomerControlForm custform;
         private void custCtrlBtn_Click(object sender, EventArgs e)
         {
-            ShowForm(ref custform, "Customer Control");
+            if (isUserLoggedIn)
+            {
+                ShowForm(ref custform, "Customer Control");
+            }
+            else
+            {
+                SigninConfirm();
+            }
+            
+            
             //homePanel.Visible = true;
             //if (custform == null || custform.IsDisposed)
             //{
@@ -191,7 +203,14 @@ namespace UI.Forms
         private ProductControlForm prodform;
         private void prodCtrlBtn_Click(object sender, EventArgs e)
         {
-            ShowForm(ref prodform, "Product Control");
+            if (isUserLoggedIn)
+            {
+                ShowForm(ref prodform, "Product Control");
+            }
+            else
+            {
+                SigninConfirm();
+            }
             //homePanel.Visible = true;
             //if (prodform == null || prodform.IsDisposed)
             //{
@@ -209,7 +228,14 @@ namespace UI.Forms
         private SupplierControlForm suppform;
         private void suppCtrlBtn_Click(object sender, EventArgs e)
         {
-            ShowForm(ref suppform, "Supplier Control");
+            if (isUserLoggedIn)
+            {
+                ShowForm(ref suppform, "Supplier Control");
+            }
+            else
+            {
+                SigninConfirm();
+            }
             //homePanel.Visible = true;
             //if (suppform == null || suppform.IsDisposed)
             //{
@@ -227,7 +253,21 @@ namespace UI.Forms
         private UserControlForm userform;
         private void userCtrlBtn_Click(object sender, EventArgs e)
         {
-            ShowForm(ref userform, "User Control");
+            if (isUserLoggedIn)
+            {
+                if (currentUserRole == "manager") 
+                {
+                    ShowForm(ref userform, "User Control");
+                }
+                else
+                {
+                    shareFile.ShowMessage("Sorry, you can not access this...");
+                }
+            }
+            else
+            {
+                SigninConfirm();
+            }
             //homePanel.Visible = true;
             //if (userform == null || userform.IsDisposed)
             //{
@@ -246,7 +286,14 @@ namespace UI.Forms
         private CustomerOrder custord;
         private void cartCtrlBtn_Click(object sender, EventArgs e)
         {
-            ShowForm(ref custord, "Customer Order");
+            if (isUserLoggedIn)
+            {
+                ShowForm(ref custord, "Customer Order");
+            }
+            else
+            {
+                SigninConfirm();
+            }
             //homePanel.Visible = true;
             //if (custord == null || custord.IsDisposed)
             //{
@@ -264,7 +311,14 @@ namespace UI.Forms
         private SupplierOrder suppord;
         private void suppOrderBtn_Click(object sender, EventArgs e)
         {
-            ShowForm(ref suppord, "Supplier Order");
+            if (isUserLoggedIn)
+            {
+                ShowForm(ref suppord, "Supplier Order");
+            }
+            else
+            {
+                SigninConfirm();
+            }
             //homePanel.Visible = true;
             //if (suppord == null || suppord.IsDisposed)
             //{
@@ -282,7 +336,14 @@ namespace UI.Forms
         private GoodsReceived goodsin;
         private void goodsInBtn_Click(object sender, EventArgs e)
         {
-            ShowForm(ref goodsin, "Goods Received");
+            if (isUserLoggedIn)
+            {
+                ShowForm(ref goodsin, "Goods Received");
+            }
+            else
+            {
+                SigninConfirm();
+            }
             //homePanel.Visible = true;
             //if (goodsin == null || goodsin.IsDisposed)
             //{
@@ -313,7 +374,14 @@ namespace UI.Forms
         private TaskMenu tasks;
         private void taskMenuBtn_Click(object sender, EventArgs e)
         {
-            ShowForm(ref tasks, "Task Menu");
+            if (isUserLoggedIn)
+            {
+                ShowForm(ref tasks, "Task Menu");
+            }
+            else
+            {
+                SigninConfirm();
+            }
             //homePanel.Visible = true;
             //if (tasks == null || tasks.IsDisposed)
             //{
@@ -405,7 +473,14 @@ namespace UI.Forms
         #region Other Action
         private void titleButton_Click(object sender, EventArgs e)
         {
-            taskMenuBtn.PerformClick();
+            if (isUserLoggedIn)
+            {
+                taskMenuBtn.PerformClick();
+            }
+            else
+            {
+                SigninConfirm();
+            }
         }
         private void controlsDisplayBtn_Click(object sender, EventArgs e)
         {

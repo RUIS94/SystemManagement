@@ -10,9 +10,9 @@ namespace UI.Services
     {
         #region Generic
         private readonly HttpClient _httpClient;
-        //private const string baseUrl = "http://localhost:8000/api";
-        private const string baseUrl = "https://localhost:7207/api";//For Development Envir
-        //private const string baseUrl = "";//add another later
+        private const string baseUrl = "http://localhost:8000/api";
+        //private const string baseUrl = "https://localhost:7207/api";//For Development Envir
+        //private const string baseUrl = "http://localhost:5000/api";//replacement api
         public ApiService(HttpClient httpClient)
         {
             _httpClient = httpClient;
