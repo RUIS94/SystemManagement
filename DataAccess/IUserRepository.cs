@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model;
+using static Model.DTO;
 
 namespace DataAccess
 {
@@ -21,5 +22,6 @@ namespace DataAccess
         //Task<bool> UpdateUserPasswordAsync(string username, string password);
         //Task<string> GenerateNewUserIDAsync();
         Task<string> GetUserRole(string username, string password);
+        Task<List<GetUsername>> GetAllUserName();
     }
 }

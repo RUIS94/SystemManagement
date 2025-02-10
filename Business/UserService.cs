@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using Model;
+using static Model.DTO;
 
 namespace Business
 {
@@ -58,6 +59,10 @@ namespace Business
         public async Task<List<User>> GetUsersByTermAsync(string term)
         {
             return await _userRepository.GetUserByTerm(term);
+        }
+        public async Task<List<GetUsername>> GetAllUserNameAsync()
+        {
+            return await _userRepository.GetAllUserName();
         }
     }
 }

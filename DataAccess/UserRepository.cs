@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Model;
+using static Model.DTO;
 
 namespace DataAccess
 {
@@ -93,6 +94,27 @@ namespace DataAccess
             string condition = $"UserID = '{user.UserID}'";
             Update("Users", parameters, condition);
             return Task.FromResult(true);
+        }
+        
+        public Task<List<GetUsername>> GetAllUserName()
+        {
+            string query = "SELECT UserName FROM Users";
+            DataTable dt = GetData(query);
+            List<GetUsername> list = new List<GetUsername>();
+            foreach (DataRow row in dt.Rows)
+            {
+                GetUsername item = new GetUsername();
+                var properties = typeof(GetUsername).GetProperties();
+                for (int i = 0; i < properties.Length; i++)
+                {
+                    if (row[i] != DBNull.Value)
+                    {
+                        properties[i].SetValue(item, row[i]);
+                    }
+                }
+                list.Add(item);
+            }
+            return Task.FromResult(list);
         }
 
         public Task<bool> DeleteUser(string userId)

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model;
+using static Model.DTO;
 
 namespace API.Controllers
 {
@@ -72,6 +73,14 @@ namespace API.Controllers
             }
             return Ok(users);
         }
+
+        [HttpGet("allusername")]
+        public async Task<ActionResult<List<GetUsername>>> AllUsername()
+        {
+            var list = await _userService.GetAllUserNameAsync();
+            return Ok(list);
+        }
+
         //[HttpGet("UserID")]
         //public async Task<ActionResult<string>> GetUserID()
         //{

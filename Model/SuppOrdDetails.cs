@@ -8,11 +8,11 @@ namespace Model
 {
     public class SuppOrdDetails
     {
-        public required string ID { get; set; }
+        public string? ID { get; set; }
         public string? SupplierOrderID { get; set;}
         public string? ProductCode { get; set; }
-        public decimal? Price { get; set; }
-        public int? Qty { get; set; }
-        public decimal? Total {  get; set; }
+        public string? Price { get; set; }
+        public string? Qty { get; set; }
+        public string? Total {  get; set; }
     }
 }

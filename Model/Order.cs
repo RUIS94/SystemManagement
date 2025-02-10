@@ -7,5 +7,6 @@
         public string OrderDate { get; set; }
         public decimal TotalAmount { get; set; }
         public string Status { get; set; }
+        public string Operator { get; set; }
     }
 }

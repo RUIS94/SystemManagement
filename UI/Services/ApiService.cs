@@ -10,7 +10,7 @@ namespace UI.Services
     {
         #region Generic
         private readonly HttpClient _httpClient;
-        //private const string baseUrl = "http://localhost:5000/api";
+        //private const string baseUrl = "http://localhost:8000/api";
         private const string baseUrl = "https://localhost:7207/api";//For Development Envir
         //private const string baseUrl = "";//add another later
         public ApiService(HttpClient httpClient)
@@ -84,6 +84,10 @@ namespace UI.Services
         public async Task<bool> DeleteUserAsync(string id)
         {
             return await DeleteAsync($"{baseUrl}/Users/{id}");
+        }
+        public async Task<List<GetUsername>> AllUsernameAsync()
+        {
+            return await GetAsync<List<GetUsername>>($"{baseUrl}/Users/allusername");
         }
         //public async Task<string> GenerateNewUserIDAsync()
         //{
@@ -395,7 +399,37 @@ namespace UI.Services
         public async Task<bool> UpdateNotes(EventNotes eventnotes)
         {
             return await PutAsync($"{baseUrl}/Events/updateNotes", eventnotes);
-        }     
+        }
+        #endregion
+
+        #region SupplierOrder Api
+        public async Task<List<SupplierOrder>> GetSupplierOrders()
+        {
+            return await GetAsync<List<SupplierOrder>>($"{baseUrl}/SupplierOrder");
+        }
+        public async Task<List<SupplierOrder>> GetSupplierOrderByTerm(string term)
+        {
+            return await GetAsync<List<SupplierOrder>>($"{baseUrl}/SupplierOrder/{term}");
+        }
+        public async Task<bool> InsertSupplierOrder(SupplierOrder supplierOrder)
+        {
+            return await PostAsync($"{baseUrl}/SupplierOrder", supplierOrder);
+        }
+        #endregion
+
+        #region SuppOrdDetails Api
+        public async Task<List<SuppOrdDetails>> GetSuppOrdDetails()
+        {
+            return await GetAsync<List<SuppOrdDetails>>($"{baseUrl}/SuppOrdDetails");
+        }
+        public async Task<List<SuppOrdDetails>> GetSuppOrdDetailsByTerm(string term)
+        {
+            return await GetAsync<List<SuppOrdDetails>>($"{baseUrl}/SuppOrdDetails/{term}");
+        }
+        public async Task<bool> InsertSuppOrdDetail(SuppOrdDetails suppOrdetails)
+        {
+            return await PostAsync($"{baseUrl}/SuppOrdDetails", suppOrdetails);
+        }
         #endregion
     }
 }

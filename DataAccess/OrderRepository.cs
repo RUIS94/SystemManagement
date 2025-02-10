@@ -55,9 +55,9 @@ namespace DataAccess
 
         public async Task<bool> AddOrderAsync(Order order)
         {
-            if (!CheckExists("Customers", "CustomerID", order.CustomerID))
+            if (CheckExists("Orders", "OrderID", order.OrderID))
             {
-                throw new Exception("Invalid Customer ID.");
+                throw new Exception("Invalid OrderID.");
             }
             var parameters = new Dictionary<string, object>
             {
@@ -65,7 +65,8 @@ namespace DataAccess
                 { "CustomerID", order.CustomerID },
                 { "OrderDate", order.OrderDate },
                 { "TotalAmount", order.TotalAmount },
-                { "Status", order.Status }
+                { "Status", order.Status },
+                { "Operator", order.Operator}
             };
 
             Insert("Orders", parameters); 

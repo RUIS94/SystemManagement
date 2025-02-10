@@ -11,24 +11,29 @@ namespace Model
     {
         public class BalanceUpdate
         {
-            public string CustomerID { get; set; }
+            public string? CustomerID { get; set; }
             public decimal AccountBalance { get; set; }
         }
         public class InventoryUpdate
         {
-            public string ProductCode { get; set; }
+            public string? ProductCode { get; set; }
             public int Inventory { get; set; }
         }
         public class  NotesForCust
         {
-            public string CustomerID { get; set; }
-            public string Notes { get; set; }  
+            public string? CustomerID { get; set; }
+            public string? Notes { get; set; }  
         }
 
         public class EventNotes
         {
-            public string ID { get; set; }
-            public string Notes { get; set; }
+            public string? ID { get; set; }
+            public string? Notes { get; set; }
+        }
+
+        public class GetUsername
+        {
+            public string?  UserName { get; set; }
         }
     }
 }

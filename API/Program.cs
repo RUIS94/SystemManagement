@@ -29,6 +29,10 @@ builder.Services.AddScoped<IHelpDocsRepository, HelpDocsRepository>();
 builder.Services.AddScoped<HelpDocsService>();
 builder.Services.AddScoped<IEventsRepository, EventsRepository>();
 builder.Services.AddScoped<EventsService>();
+builder.Services.AddScoped<ISupplierOrderRepository, SupplierOrderRepository>();
+builder.Services.AddScoped<SupplierOrderService>();
+builder.Services.AddScoped<ISuppOrdDetailsRepository, SuppOrdDetailsRepository>();
+builder.Services.AddScoped<SuppOrdDetailsService>();
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -44,8 +48,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseSwagger();
-app.UseSwaggerUI();
+
+//app.UseSwagger();
+//app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

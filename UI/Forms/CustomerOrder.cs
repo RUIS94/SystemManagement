@@ -26,7 +26,7 @@ namespace UI
             shareFile.ClearTextBoxes(new Control[]
             {
                 idBox, nameBox, emailBox, addressBox1, addressBox2,
-                orderNoBox, statusBox, orderDateBox, userBox, subTotalBox,
+                orderNoBox, statusBox, orderDateBox, subTotalBox,
                 gstBox, sumTotalBox, searchBox1, searchBox2
             });
         }
@@ -169,6 +169,15 @@ namespace UI
             shareFile.SetForm(qaf, this.Parent);
             qaf.BringToFront();
         }
+
+        private async void SetComboBox()
+        {
+            List<GetUsername> list = await apiService.AllUsernameAsync();
+            foreach (GetUsername item in list) 
+            {
+                operatorBox.Items.Add(item.UserName);
+            }
+        }
         #endregion
 
         #region Buttons Action
@@ -207,8 +216,8 @@ namespace UI
                 MessageBox.Show("Customer ID is required.");
                 return;
             }
-
             await ProcessOrder();
+            shareFile.RewriteSequence(cartList);
         }
         private void cancelOrder_Click(object sender, EventArgs e)
         {
@@ -231,6 +240,7 @@ namespace UI
             orderNoBox.Text = orderID;
             statusBox.Text = "unpaid";
             searchBox1.Focus();
+            SetComboBox();
             for (int i = 0; i < 100; i++)
             {
                 cartList.Rows.Add();
@@ -243,7 +253,7 @@ namespace UI
         {
             string orderID = orderNoBox.Text.Trim();
             string customerID = idBox.Text.Trim();
-
+            string? user = operatorBox.SelectedItem.ToString();
             decimal sumTotal = Convert.ToDecimal(sumTotalBox.Text);
             var balance = await apiService.GetBalanceAsync(customerID);
             decimal finalbalance = Convert.ToDecimal(balance) - sumTotal;
@@ -269,8 +279,10 @@ namespace UI
                 CustomerID = customerID,
                 OrderDate = orderDateBox.Text,
                 TotalAmount = sumTotal,
-                Status = "Paid"
+                Status = "Paid",
+                Operator = user
             };
+            //await apiService.InsertOrderAsync(newOrder);
             try
             {
                 await apiService.InsertOrderAsync(newOrder);
@@ -280,6 +292,7 @@ namespace UI
             {
                 shareFile.HandleException(ex);
             }
+
             SendOrderConfirmationEmail(orderID);
             TextBoxClear();
             cartList.Rows.Clear();

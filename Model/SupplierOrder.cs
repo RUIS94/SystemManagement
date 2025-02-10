@@ -8,9 +8,9 @@ namespace Model
 {
     public class SupplierOrder
     {
-        public required string SupplierOrderID { get; set; }
+        public string? SupplierOrderID { get; set; }
         public string? SupplierCode { get; set; }
         public DateTime? Date { get; set; }
-        public decimal? Total { get; set; }
+        public string? Total { get; set; }
     }
 }

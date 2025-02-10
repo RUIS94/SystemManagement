@@ -54,7 +54,6 @@
             discount = new DataGridViewTextBoxColumn();
             total = new DataGridViewTextBoxColumn();
             addressBox2 = new TextBox();
-            userBox = new TextBox();
             userLabel = new Label();
             orderDateBox = new TextBox();
             ordDateLabel = new Label();
@@ -70,6 +69,7 @@
             searchBtn1 = new Button();
             searchBox1 = new TextBox();
             searchLabel1 = new Label();
+            operatorBox = new ComboBox();
             homePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)cartList).BeginInit();
             SuspendLayout();
@@ -77,6 +77,7 @@
             // homePanel
             // 
             homePanel.Anchor = AnchorStyles.None;
+            homePanel.Controls.Add(operatorBox);
             homePanel.Controls.Add(nameBox);
             homePanel.Controls.Add(nameLabel);
             homePanel.Controls.Add(emailBox);
@@ -94,7 +95,6 @@
             homePanel.Controls.Add(deleprod);
             homePanel.Controls.Add(cartList);
             homePanel.Controls.Add(addressBox2);
-            homePanel.Controls.Add(userBox);
             homePanel.Controls.Add(userLabel);
             homePanel.Controls.Add(orderDateBox);
             homePanel.Controls.Add(ordDateLabel);
@@ -329,14 +329,6 @@
             addressBox2.TabIndex = 20;
             addressBox2.KeyDown += addressBox2_KeyDown;
             // 
-            // userBox
-            // 
-            userBox.BorderStyle = BorderStyle.FixedSingle;
-            userBox.Location = new Point(626, 121);
-            userBox.Name = "userBox";
-            userBox.Size = new Size(156, 23);
-            userBox.TabIndex = 17;
-            // 
             // userLabel
             // 
             userLabel.AutoSize = true;
@@ -473,6 +465,14 @@
             searchLabel1.TabIndex = 0;
             searchLabel1.Text = "Search Customer";
             // 
+            // operatorBox
+            // 
+            operatorBox.FormattingEnabled = true;
+            operatorBox.Location = new Point(626, 121);
+            operatorBox.Name = "operatorBox";
+            operatorBox.Size = new Size(156, 23);
+            operatorBox.TabIndex = 37;
+            // 
             // CustomerOrder
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -501,7 +501,6 @@
         private Button searchBtn1;
         private TextBox searchBox1;
         private TextBox addressBox2;
-        private TextBox userBox;
         private Label userLabel;
         private TextBox orderDateBox;
         private Label ordDateLabel;
@@ -535,5 +534,6 @@
         private DataGridViewTextBoxColumn price;
         private DataGridViewTextBoxColumn discount;
         private DataGridViewTextBoxColumn total;
+        private ComboBox operatorBox;
     }
 }
