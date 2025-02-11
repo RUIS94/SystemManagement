@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
 using Model;
+using UI.Controls;
 using UI.Forms;
 using UI.Services;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
@@ -29,6 +30,14 @@ namespace UI
                 orderNoBox, statusBox, orderDateBox, subTotalBox,
                 gstBox, sumTotalBox, searchBox1, searchBox2
             });
+        }
+        //private MainForm main;
+        private MainProgram main;
+        private string GetUser()
+        {
+            //main = new MainForm();
+            main = new MainProgram();
+            return main.CurrentUser();
         }
         private void HandleItemSelect(string[] rowData, string formType)
         {
@@ -208,6 +217,7 @@ namespace UI
         {
             if (!shareFile.ConfirmAction("Do you want to confirm this order?", "Confirm Order"))
             {
+                await apiService.InsertActionAsync(shareFile.RecodeAction($"{GetUser()} create order for CustomerID: {idBox.Text}, OrderID = {orderNoBox.Text}"));
                 return;
             }
 
@@ -293,7 +303,7 @@ namespace UI
                 shareFile.HandleException(ex);
             }
 
-            SendOrderConfirmationEmail(orderID);
+            //SendOrderConfirmationEmail(orderID);
             TextBoxClear();
             cartList.Rows.Clear();
         }

@@ -1,6 +1,11 @@
 ﻿using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Text;
 using Model;
 using UI.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using static Model.DTO;
 
 namespace UI
 {
@@ -33,7 +38,7 @@ namespace UI
             {
                 if (control is TextBox textBox)
                 {
-                    textBox.Text = String.Empty;
+                    textBox.Text = string.Empty;
                 }
             }
         }
@@ -477,6 +482,93 @@ namespace UI
                 UseShellExecute = true
             };
             Process.Start(info);
+        }
+        #endregion
+
+        #region User Operation Logs
+        public ActionLog RecodeAction(string message)
+        {
+            var log = new ActionLog
+            {
+                Action = message
+            };
+            return log;
+        }
+        #endregion
+
+        #region File Management
+        public string Nowtime()
+        {
+            return DateTime.Now.ToString("ddMMyyyy_HHmmss");
+        }
+        public void CheckData<T>(List<T> data)
+        {
+            if (data == null || data.Count == 0)
+            {
+                ShowMessage("Data is Null");
+                return;
+            }
+        }
+        public void CheckFile(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                ShowMessage($"{filePath} does not exists");
+            }
+        }
+        public void CreateFoler(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+        public void WriteData<T>(List<T> data, string filepath)
+        {
+            PropertyInfo[] properties = typeof(T).GetProperties();
+            using (StreamWriter writer = new StreamWriter(filepath, false, Encoding.UTF8))
+            {
+                writer.WriteLine(string.Join(",", properties.Select(p => p.Name)));
+                foreach (var item in data)
+                {
+                    var values = properties.Select(p => p.GetValue(item, null)?.ToString() ?? "");
+                    writer.WriteLine(string.Join(",", values));
+                }
+            }
+        }
+        public void ExportToCsv<T>(List<T> data, string  path, string type)
+        {
+            try
+            {
+                CheckData(data);
+                CreateFoler(path);
+                string filename = $"{type}_{Nowtime()}.csv";
+                string filepath = Path.Combine(path, filename);
+                WriteData(data, filepath);
+                ShowMessage($"file save to {path}");
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
+        public void BackuoDatabase(string sourceFile, string backupFolder)
+        {
+            try
+            {
+                CreateFoler(backupFolder);
+                string filename = Path.GetFileNameWithoutExtension(sourceFile);
+                string fileExtension = Path.GetExtension(sourceFile);
+                string backupFile = Path.Combine(backupFolder, $"{filename}_BackUp_{Nowtime()}{fileExtension}");
+                //GC.Collect();
+                //GC.WaitForPendingFinalizers();
+                File.Copy(sourceFile, backupFile, true);
+                ShowMessage($"Backup database to {backupFolder}");
+            }
+            catch (Exception ex)
+            { 
+                HandleException(ex); 
+            }
         }
         #endregion
     }

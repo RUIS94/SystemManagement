@@ -10,8 +10,8 @@ namespace UI.Services
     {
         #region Generic
         private readonly HttpClient _httpClient;
-        private const string baseUrl = "http://localhost:8000/api";
-        //private const string baseUrl = "https://localhost:7207/api";//For Development Envir
+        //private const string baseUrl = "http://localhost:8000/api";
+        private const string baseUrl = "https://localhost:7207/api";//For Development Envir
         //private const string baseUrl = "http://localhost:5000/api";//replacement api
         public ApiService(HttpClient httpClient)
         {
@@ -429,6 +429,18 @@ namespace UI.Services
         public async Task<bool> InsertSuppOrdDetail(SuppOrdDetails suppOrdetails)
         {
             return await PostAsync($"{baseUrl}/SuppOrdDetails", suppOrdetails);
+        }
+        #endregion
+
+        #region OperationLog Api
+
+        public async Task<List<OperationLog>> GetAlllogsAsync()
+        {
+            return await GetAsync<List<OperationLog>>($"{baseUrl}/OperationLog");
+        }
+        public async Task<bool> InsertActionAsync(ActionLog log)
+        {
+            return await PostAsync($"{baseUrl}/OperationLog", log);
         }
         #endregion
     }

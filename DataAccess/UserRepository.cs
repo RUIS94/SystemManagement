@@ -62,7 +62,6 @@ namespace DataAccess
         //    }
         //    return Task.FromResult<User>(null);
         //}
-
         public Task<bool> AddUser(User user)
         {
             if (CheckExists("Users", "UserName", user.UserName))

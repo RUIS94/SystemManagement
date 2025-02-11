@@ -1,4 +1,5 @@
 ﻿using Model;
+using UI.Controls;
 using UI.Forms;
 using UI.Services;
 using static Model.DTO;
@@ -56,6 +57,14 @@ namespace UI
                 address2Box, drawerBox, bankBox, bsbBox, bankaccBox,
                 branchBox, acctBox, passwordBox, balanceBox, pointsBox, notesBox
             });
+        }
+        //private MainForm main;
+        private MainProgram main;
+        private string GetUser()
+        {
+            //MainForm form = new MainForm();
+            main = new MainProgram();
+            return main.CurrentUser();
         }
         #endregion
 
@@ -215,7 +224,9 @@ namespace UI
         private async void deleteBtn_Click(object sender, EventArgs e)
         {
             string custID = idBox.Text.Trim();
+            string custname = nameBox.Text.Trim();
             double balance = await apiService.GetBalanceAsync(custID);
+            await apiService.InsertActionAsync(shareFile.RecodeAction($"{GetUser()} delete customer for CustomerID: {custID} : {custname}"));
             if (balance != 0)
             {
                 shareFile.ShowMessage("Customer's account balance is not 0, can not delete");
@@ -272,6 +283,7 @@ namespace UI
             string custid = idBox.Text.Trim();
             string password = passwordBox.Text.Trim();
             string balance = balanceBox.Text.Trim();
+            await apiService.InsertActionAsync(shareFile.RecodeAction($"{GetUser()} update customer account for CustomerID: {custid}, password : {password}, balance : {balance}"));
             Account account = new Account
             {
                 AccountNumber = id,
@@ -307,7 +319,8 @@ namespace UI
                 Phone = Phone,
                 Email = Email,
                 Address1 = Address1,
-                Address2 = Address2
+                Address2 = Address2,
+                Notes = ""
             };
             bool success = await shareFile.SaveOrUpdateAsync(newCustomer, pkExists,
                 async (customer) => await apiService.UpdateCustomerAsync(customer),
@@ -316,6 +329,7 @@ namespace UI
             if (success && !pkExists)
             {
                 await CreateNewAccount(CustomerID);
+                await apiService.InsertActionAsync(shareFile.RecodeAction($"{GetUser()} save customer for CustomerID: {CustomerID}"));
             }
             TextReadOnlyControlOn();
             TextBoxClear();

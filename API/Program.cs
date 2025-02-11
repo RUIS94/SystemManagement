@@ -33,6 +33,8 @@ builder.Services.AddScoped<ISupplierOrderRepository, SupplierOrderRepository>();
 builder.Services.AddScoped<SupplierOrderService>();
 builder.Services.AddScoped<ISuppOrdDetailsRepository, SuppOrdDetailsRepository>();
 builder.Services.AddScoped<SuppOrdDetailsService>();
+builder.Services.AddScoped<IOperationLogRepository, OperationLogRepository>();
+builder.Services.AddScoped<OperationLogService>();
 // Add services to the container.
 
 builder.Services.AddControllers();

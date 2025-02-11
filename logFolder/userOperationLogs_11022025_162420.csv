@@ -1,0 +1,17 @@
+﻿ID,Timestamp,Action
+1,11/02/2025 2:00:43 PM,1
+2,11/02/2025 2:05:42 PM, log out
+3,11/02/2025 2:05:50 PM,admin log in
+4,11/02/2025 2:05:52 PM,admin log out
+5,11/02/2025 2:08:31 PM,admin log in
+6,11/02/2025 2:08:32 PM,admin log out
+7,11/02/2025 2:31:49 PM,admin log in
+8,11/02/2025 2:32:26 PM, save customer for CustomerID: 00005
+9,11/02/2025 2:39:43 PM,admin log in
+10,11/02/2025 2:44:46 PM,admin log in
+11,11/02/2025 2:46:37 PM,admin log in
+12,11/02/2025 2:47:04 PM, save customer for CustomerID: 00005
+13,11/02/2025 2:50:23 PM,admin log in
+14,11/02/2025 4:04:28 PM,admin log in
+15,11/02/2025 4:15:50 PM,admin log in
+16,11/02/2025 4:23:58 PM,admin log in
