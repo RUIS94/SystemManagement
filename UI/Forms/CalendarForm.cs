@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Globalization;
 using System.Reflection;
 using Model;
 using Newtonsoft.Json;
@@ -23,7 +24,13 @@ namespace UI.Forms
             var httpClient = new HttpClient();
             apiService = new ApiService(httpClient);
         }
-
+        //public class CustomFLPanel : FlowLayoutPanel
+        //{
+        //    public CustomFLPanel()
+        //    {
+        //        this.DoubleBuffered = true;
+        //    }
+        //}
         private void CalendarForm_Load(object sender, EventArgs e)
         {
             displayDays();
@@ -31,7 +38,7 @@ namespace UI.Forms
             UpdateCalendarEvents();
         }
         private EventsForm eventsform;
-        private void addEvent_Click(object sender, EventArgs e) 
+        private void addEvent_Click(object sender, EventArgs e)
         {
             if (eventsform == null || eventsform.IsDisposed)
             {
@@ -50,7 +57,7 @@ namespace UI.Forms
                 homePanel.Enabled = true;
             };
         }
-        private void today_Click(object sender, EventArgs e) 
+        private void today_Click(object sender, EventArgs e)
         {
             currentDate = td;
             if (lastSelectedDay != null)
@@ -114,38 +121,11 @@ namespace UI.Forms
                 daycontainer.Controls.Add(calendarD);
             }
 
-            displayMonth.Text = currentDate.ToString("MMM yyyy");
+            m_yDisp.Text = currentDate.ToString("MMM yyyy");
             UpdateCalendarEvents();
         }
         private async void UpdateCalendarEvents()
         {
-            //string rp = shareFile.RP();
-            //string filePath = $"{rp}events.txt";
-
-            //if (File.Exists(filePath))
-            //{
-            //    string json = File.ReadAllText(filePath);
-            //    List<EventInfo> events = JsonConvert.DeserializeObject<List<EventInfo>>(json);
-            //    foreach (Control control in daycontainer.Controls)
-            //    {
-            //        if (control is CalendarDays calendarDay)
-            //        {
-            //            DateTime dayDate = new DateTime(currentDate.Year, currentDate.Month, calendarDay.tDay);
-            //            var dayEvents = events.Where(e => e.Date == dayDate.ToString("dd/MM/yyyy")).ToList();
-            //            if (dayEvents.Any())
-            //            {
-            //                string summary = dayEvents.First().Summary;
-            //                string shortSummary = GetFirstFewWords(summary, 3);
-            //                calendarDay.SetEventLabel(shortSummary);
-            //                calendarDay.ShowEventLabel();
-            //            }
-            //            else
-            //            {
-            //                calendarDay.ClearEventLabel();
-            //            }
-            //        }
-            //    }
-            //}
             List<Events> events = await apiService.GetAllEventsAsync();
             foreach (Control control in daycontainer.Controls)
             {
@@ -179,11 +159,25 @@ namespace UI.Forms
             string[] words = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             return string.Join(" ", words.Take(wordCount));
         }
-        //public class EventInfo
-        //{
-        //    public string Summary { get; set; }
-        //    public string Date { get; set; }
-        //    public string Notes { get; set; }
-        //}
+        private string selectedM;
+        private MonthSelect ms;
+        private void m_yDisp_Click(object sender, EventArgs e)
+        {
+            ms = new MonthSelect();
+            selectPanel.Controls.Add(ms);
+            selectPanel.Visible = true;
+            selectPanel.ControlRemoved += (s, args) => 
+            {
+                selectedM = ms.SeleMonth();
+                selectPanel.Visible = false;
+                SetDate();
+                //shareFile.ShowMessage($"{selectedM}");
+            };
+        }
+        private void SetDate()
+        {
+            currentDate = DateTime.ParseExact(selectedM, "M/yyyy", CultureInfo.InvariantCulture);
+            displayDays();
+        }
     }
 }

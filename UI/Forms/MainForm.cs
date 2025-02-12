@@ -27,12 +27,19 @@ namespace UI.Forms
             setform.FormClosed += (s, args) => this.Enabled = true;
             setform.ShowDialog();
         }
-        private SupplementForm suf;
+        private static SupplementForm? suf;
         private void newform_Click(object sender, EventArgs e)
         {
-            suf = new SupplementForm();
-            suf.TopLevel = true;
-            suf.ShowDialog();
+            if (suf == null || suf.IsDisposed) 
+            {
+                suf = new SupplementForm();
+                suf.FormClosed += (s, args) => suf = null;
+                suf.Show();
+            }
+            else
+            {
+                suf.Activate();
+            }
         }
         private MainProgram main;
         private void newtab_Click(object sender, EventArgs e)

@@ -72,7 +72,19 @@ namespace UI
                 MessageBox.Show("Please select a row", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-            #endregion
+        public void CloseAllControlsInPanel(Panel panel)
+        {
+            for (int i = panel.Controls.Count - 1; i >= 0;  i--)
+            {
+                if (panel.Controls[i] is Form form)
+                {
+                    form.Close();
+                    form.Dispose();
+                }
+            }
+            panel.Controls.Clear();
+        }
+        #endregion
 
         #region Data Binding and Search
 
@@ -243,6 +255,29 @@ namespace UI
                 {
                     BindTextBoxEvent(control);
                 }
+            }
+        }
+        private static List<TextBox> boxList = new List<TextBox>();
+        public void RegisterBoxes(List<TextBox> boxes)
+        {
+            boxList = new List<TextBox>(boxes);
+            foreach (var tb in boxList)
+            {
+                //tb.KeyDown -= TextBox_KeyDown;
+                tb.KeyDown += TextBox_KeyDown;
+            }
+        }
+        private static void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (sender is not TextBox ctb) return;
+            int index = boxList.IndexOf(ctb);
+            if (e.KeyCode == Keys.Down && index < boxList.Count - 1)// || e.KeyCode == Keys.Tab && index < boxList.Count - 1)
+            {
+                boxList[index + 1].Focus();
+            }
+            else if (e.KeyCode == Keys.Up && index > 0)// || e.Shift && e.KeyCode == Keys.Tab)
+            {
+                boxList[index - 1].Focus();
             }
         }
         #endregion

@@ -49,8 +49,9 @@
             mainPanel.Dock = DockStyle.Fill;
             mainPanel.Location = new Point(0, 0);
             mainPanel.Name = "mainPanel";
-            mainPanel.Size = new Size(1108, 938);
+            mainPanel.Size = new Size(1108, 828);
             mainPanel.TabIndex = 0;
+            mainPanel.UseWaitCursor = true;
             // 
             // titlePanel
             // 
@@ -60,9 +61,9 @@
             titlePanel.Controls.Add(setBtn);
             titlePanel.Controls.Add(newform);
             titlePanel.Controls.Add(newtab);
-            titlePanel.Location = new Point(86, 3);
+            titlePanel.Location = new Point(81, 3);
             titlePanel.Name = "titlePanel";
-            titlePanel.Size = new Size(1019, 25);
+            titlePanel.Size = new Size(1024, 22);
             titlePanel.TabIndex = 0;
             // 
             // deleBtn
@@ -70,7 +71,7 @@
             deleBtn.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             deleBtn.Location = new Point(55, 3);
             deleBtn.Name = "deleBtn";
-            deleBtn.Size = new Size(20, 20);
+            deleBtn.Size = new Size(20, 18);
             deleBtn.TabIndex = 3;
             deleBtn.Text = "D";
             deleBtn.UseVisualStyleBackColor = true;
@@ -80,9 +81,9 @@
             // setBtn
             // 
             setBtn.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
-            setBtn.Location = new Point(995, 3);
+            setBtn.Location = new Point(1000, 3);
             setBtn.Name = "setBtn";
-            setBtn.Size = new Size(20, 20);
+            setBtn.Size = new Size(20, 18);
             setBtn.TabIndex = 2;
             setBtn.Text = "S";
             setBtn.UseVisualStyleBackColor = true;
@@ -93,7 +94,7 @@
             newform.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             newform.Location = new Point(29, 3);
             newform.Name = "newform";
-            newform.Size = new Size(20, 20);
+            newform.Size = new Size(20, 18);
             newform.TabIndex = 1;
             newform.Text = "F";
             newform.UseVisualStyleBackColor = true;
@@ -104,7 +105,7 @@
             newtab.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             newtab.Location = new Point(3, 3);
             newtab.Name = "newtab";
-            newtab.Size = new Size(20, 20);
+            newtab.Size = new Size(20, 18);
             newtab.TabIndex = 0;
             newtab.Text = "T";
             newtab.UseVisualStyleBackColor = true;
@@ -118,7 +119,7 @@
             tabControl.Location = new Point(0, 0);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size(1108, 938);
+            tabControl.Size = new Size(1108, 828);
             tabControl.TabIndex = 1;
             // 
             // homePage
@@ -127,15 +128,15 @@
             homePage.Location = new Point(4, 34);
             homePage.Name = "homePage";
             homePage.Padding = new Padding(3);
-            homePage.Size = new Size(1100, 900);
+            homePage.Size = new Size(1100, 790);
             homePage.TabIndex = 0;
             homePage.Text = "Home Page";
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1108, 938);
+            ClientSize = new Size(1108, 828);
             Controls.Add(mainPanel);
             Name = "MainForm";
             Text = "MainForm";

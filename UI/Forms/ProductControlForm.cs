@@ -77,11 +77,23 @@ namespace UI
         private void ProductControlForm_Load(object sender, EventArgs e)
         {
             shareFile.BindTextBoxEvent(this);
+            TextBoxFocusAction();
             TextReadOnlyControlOn();
+            searchBox.Focus();
         }
         private void editBtn_Click(object sender, EventArgs e)
         {
-            TextReadOnlyControlOff();
+            if (idBox.ReadOnly)
+            { 
+                TextReadOnlyControlOff();
+                trackBar.Value = 1;
+            }
+            else
+            {
+                TextReadOnlyControlOn();
+                trackBar.Value = 0;
+            }
+            
         }
 
         private void searchBtn_Click(object sender, EventArgs e)
@@ -216,6 +228,11 @@ namespace UI
                 default:
                     return base.ProcessCmdKey(ref msg, keyData);
             }
+        }
+
+        private void TextBoxFocusAction()
+        {
+            shareFile.RegisterBoxes(new List<TextBox> {searchBox, idBox, nameBox, barcodeBox, groupBox, priceBox, currentCostBox, latestOrderCostBox, currentInventoryBox, latestOrderIDBox, latestUpdateTimeBox, latestUpdateQuantityBox});
         }
         #endregion
 

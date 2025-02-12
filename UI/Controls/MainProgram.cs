@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using UI.Forms;
 using UI.Services;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace UI.Controls
 {
@@ -37,16 +38,8 @@ namespace UI.Controls
             ToolsControlsPosition();
             exchangeForm.Items.Add("Home Menu" + homePanel);
             SignOut();
+            Preload();
         }
-        //private void MainForm_Load(object sender, EventArgs e)
-        //{
-        //    shareFile.BindTextBoxEvent(this);
-        //    DateTime now = DateTime.Now;
-        //    timeLabel.Text = now.ToString("dd/MM/yyyy");
-        //    ToolsControlsPosition();
-        //    exchangeForm.Items.Add("Home Menu" + homePanel);
-        //    SignOut();
-        //}
         private void SigninConfirm()
         {
             if (shareFile.ConfirmAction("Please Sign in first", "Sign In"))
@@ -62,7 +55,7 @@ namespace UI.Controls
             currentUserPassword = string.Empty;
             currentUsername = string.Empty;
             lockBtn.Visible = false;
-
+            shareFile.CloseAllControlsInPanel(homePanel);
         }
         public async void SetUserLoggedIn(string username, string role)
         {
@@ -90,18 +83,6 @@ namespace UI.Controls
                 }
             }
         }
-        //private void LockPanel()
-        //{
-        //    fucPanel.Enabled = false;
-        //    mainBtnPanel.Enabled = false;
-        //    homePanel.Enabled = false;
-        //}
-        //private void UnlockPanel()
-        //{
-        //    fucPanel.Enabled = true;
-        //    mainBtnPanel.Enabled = true;
-        //    homePanel.Enabled = true;
-        //}
         private void ShowForm<T>(ref T form, string formName) where T : Form, new()
         {
             homePanel.Visible = true;
@@ -199,17 +180,64 @@ namespace UI.Controls
         }
         #endregion
 
+        #region Preload forms and controls
+        private CustomerControlForm custform; // F
+        private ProductControlForm prodform; // F
+        private SupplierControlForm suppform; //F
+        private UserControlForm userform; //F
+        private CustomerOrder custord; //F
+        private SupplierOrder suppord; //F
+        private GoodsReceived goodsin; //F
+        private TaskMenu tasks; //F
+        private HelpForm help; //F
+        private CalendarForm calendar; //F
+        private WallPaperForm wallpaper; //F
+        private EmailForm email; //F
+        private Lock lockC; //UC
+        private smallCalendar sc; //UC
+        private Calculator calcu; //C
+        private CurrencyExchange ce; //UC
+        private Loading loading;
+        private async void Preload()
+        {
+            await Task.Run(() =>
+            {
+                LoadAndClose(custform);
+                LoadAndClose(prodform);
+                LoadAndClose(suppform);
+                LoadAndClose(userform);
+                LoadAndClose(custord);
+                LoadAndClose(suppord);
+                LoadAndClose(goodsin);
+                LoadAndClose(tasks);
+                LoadAndClose(help);
+                LoadAndClose(calendar);
+            });
+        }
+        private async void ShowLoading()
+        {
+            await Task.Run(() =>
+            {
+                loading = new Loading();
+                shareFile.SetForm(loading, homePanelContainer);
+                homePanelContainer.Controls.Add(loading);
+                System.Threading.Thread.Sleep(3000);
+                homePanelContainer.Controls.Remove(loading);
+            });
+        }
+        private async void LoadAndClose<T>(T form) where T : Form, new()
+        {
+            await Task.Run(() =>
+            {
+                form = new T();
+                form.Close();
+                form.Dispose();
+            });
+        }
+        
+        #endregion
+
         #region Forms Control
-        //private void setBtn_Click(object sender, EventArgs e)
-        //{
-        //    mainPanel.Enabled = false;
-        //    SettingForm setform = new SettingForm();
-        //    setform.TopLevel = true;
-        //    setform.FormClosed += (s, args) => mainPanel.Enabled = true;
-        //    setform.ShowDialog();
-        //    //setform.Show();
-        //}
-        private CustomerControlForm custform;
         private void custCtrlBtn_Click(object sender, EventArgs e)
         {
             if (isUserLoggedIn)
@@ -221,7 +249,6 @@ namespace UI.Controls
                 SigninConfirm();
             }
         }
-        private ProductControlForm prodform;
         private void prodCtrlBtn_Click(object sender, EventArgs e)
         {
             if (isUserLoggedIn)
@@ -233,7 +260,6 @@ namespace UI.Controls
                 SigninConfirm();
             }
         }
-        private SupplierControlForm suppform;
         private void suppCtrlBtn_Click(object sender, EventArgs e)
         {
             if (isUserLoggedIn)
@@ -245,7 +271,6 @@ namespace UI.Controls
                 SigninConfirm();
             }
         }
-        private UserControlForm userform;
         private void userCtrlBtn_Click(object sender, EventArgs e)
         {
             if (isUserLoggedIn)
@@ -265,7 +290,6 @@ namespace UI.Controls
             }
 
         }
-        private CustomerOrder custord;
         private void cartCtrlBtn_Click(object sender, EventArgs e)
         {
             if (isUserLoggedIn)
@@ -277,7 +301,6 @@ namespace UI.Controls
                 SigninConfirm();
             }
         }
-        private SupplierOrder suppord;
         private void suppOrderBtn_Click(object sender, EventArgs e)
         {
             if (isUserLoggedIn)
@@ -289,7 +312,6 @@ namespace UI.Controls
                 SigninConfirm();
             }
         }
-        private GoodsReceived goodsin;
         private void goodsInBtn_Click(object sender, EventArgs e)
         {
             if (isUserLoggedIn)
@@ -317,7 +339,6 @@ namespace UI.Controls
                 CloseAllForm(sender, e);
             }
         }
-        private TaskMenu tasks;
         private void taskMenuBtn_Click(object sender, EventArgs e)
         {
             if (isUserLoggedIn)
@@ -329,17 +350,15 @@ namespace UI.Controls
                 SigninConfirm();
             }
         }
-        private HelpForm help;
         private void helpLabel_Click(object sender, EventArgs e)
         {
             ShowForm(ref help, "Help");
         }
-        private CalendarForm calendar;
-        private void openCalendar_Click(object sender, EventArgs e)
+        private async void openCalendar_Click(object sender, EventArgs e)
         {
-            ShowForm(ref calendar, "Calendar");
+            //ShowLoading();
+            ShowForm(ref calendar, "Calendar");         
         }
-        private WallPaperForm wallpaper;
         private void wallpaperBtn_Click(object sender, EventArgs e)
         {
             homePanel.Visible = true;
@@ -357,7 +376,6 @@ namespace UI.Controls
                 wallpaper.BringToFront();
             }
         }
-        private EmailForm email;
         private void emailBtn_Click(object sender, EventArgs e)
         {
             homePanel.Visible = true;
@@ -455,7 +473,6 @@ namespace UI.Controls
                 }
             }
         }
-        private Lock lockC;
         private void lockBtn_Click(object sender, EventArgs e)
         {
             mainPanel.Enabled = false;
@@ -507,7 +524,6 @@ namespace UI.Controls
                 ToolsControlsPosition();
             }
         }
-        private smallCalendar sc;
         private void calendarPanel_Paint(object sender, PaintEventArgs e)
         {
             sc = new smallCalendar();
@@ -520,7 +536,6 @@ namespace UI.Controls
         /// <summary>
         /// Calculator control
         /// </summary>
-        private Calculator calcu;
         private void calculatorPanel_Paint(object sender, PaintEventArgs e)
         {
             calcu = new Calculator();
@@ -563,7 +578,6 @@ namespace UI.Controls
         /// <summary>
         /// Currency Exchange control
         /// </summary>
-        private CurrencyExchange ce;
         private void exchangePanel_Paint(object sender, PaintEventArgs e)
         {
             ce = new CurrencyExchange();

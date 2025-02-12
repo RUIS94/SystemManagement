@@ -81,7 +81,7 @@ namespace DataAccess
                 { "Email", customer.Email },
                 { "Address1", customer.Address1 },
                 { "Address2", customer.Address2 },
-                {"Notes", customer.Notes }
+                { "Notes", customer.Notes }
             };
 
             Insert("Customers", parameters); 

@@ -30,7 +30,7 @@
         {
             addevent = new Label();
             today = new Label();
-            displayMonth = new Label();
+            m_yDisp = new Label();
             nextMonth = new Button();
             sat = new Label();
             fri = new Label();
@@ -42,6 +42,7 @@
             lastMonth = new Button();
             daycontainer = new FlowLayoutPanel();
             homePanel = new Panel();
+            selectPanel = new Panel();
             homePanel.SuspendLayout();
             SuspendLayout();
             // 
@@ -67,15 +68,16 @@
             today.Text = "Today";
             today.Click += today_Click;
             // 
-            // displayMonth
+            // m_yDisp
             // 
-            displayMonth.AutoSize = true;
-            displayMonth.Font = new Font("Arial", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            displayMonth.Location = new Point(324, 11);
-            displayMonth.Name = "displayMonth";
-            displayMonth.Size = new Size(79, 27);
-            displayMonth.TabIndex = 24;
-            displayMonth.Text = "Month";
+            m_yDisp.AutoSize = true;
+            m_yDisp.Font = new Font("Arial", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            m_yDisp.Location = new Point(330, 12);
+            m_yDisp.Name = "m_yDisp";
+            m_yDisp.Size = new Size(134, 27);
+            m_yDisp.TabIndex = 24;
+            m_yDisp.Text = "Month/Year";
+            m_yDisp.Click += m_yDisp_Click;
             // 
             // nextMonth
             // 
@@ -176,10 +178,11 @@
             // 
             // homePanel
             // 
+            homePanel.Controls.Add(selectPanel);
             homePanel.Controls.Add(addevent);
             homePanel.Controls.Add(lastMonth);
             homePanel.Controls.Add(today);
-            homePanel.Controls.Add(displayMonth);
+            homePanel.Controls.Add(m_yDisp);
             homePanel.Controls.Add(daycontainer);
             homePanel.Controls.Add(sat);
             homePanel.Controls.Add(nextMonth);
@@ -194,6 +197,14 @@
             homePanel.Name = "homePanel";
             homePanel.Size = new Size(814, 661);
             homePanel.TabIndex = 27;
+            // 
+            // selectPanel
+            // 
+            selectPanel.Location = new Point(204, 42);
+            selectPanel.Name = "selectPanel";
+            selectPanel.Size = new Size(392, 178);
+            selectPanel.TabIndex = 27;
+            selectPanel.Visible = false;
             // 
             // CalendarForm
             // 
@@ -215,7 +226,7 @@
 
         private Label addevent;
         private Label today;
-        private Label displayMonth;
+        private Label m_yDisp;
         private Button nextMonth;
         private Label sat;
         private Label fri;
@@ -227,5 +238,6 @@
         private Button lastMonth;
         private FlowLayoutPanel daycontainer;
         private Panel homePanel;
+        private Panel selectPanel;
     }
 }

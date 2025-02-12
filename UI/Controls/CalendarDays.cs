@@ -31,7 +31,6 @@ namespace UI.Controls
             lbdays.Text = numday.ToString();
             tDay = numday;
         }
-
         private void CalendarDays_Click(object sender, EventArgs e)
         {
             isSelected = !isSelected;
@@ -53,7 +52,6 @@ namespace UI.Controls
             this.BackColor = Color.LightBlue;
             isSelected = true;
         }
-
         public void Deselect()
         {
             this.BackColor = Color.White;
