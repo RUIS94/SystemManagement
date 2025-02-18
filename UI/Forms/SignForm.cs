@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using Model;
+using UI.Controls;
 using UI.Forms;
 using UI.Services;
 
@@ -7,10 +8,13 @@ namespace UI
 {
     public partial class SignForm : Form
     {
-        private MainForm main;
+        //private MainForm main;
+        private MainProgram main;
         private readonly ApiService apiService;
         ShareFile shareFile = new ShareFile();
-        public SignForm(MainForm main)
+        public string userPassword { get; private set; }
+        //public SignForm(MainForm main)
+        public SignForm(MainProgram main)
         {
             InitializeComponent();
             this.main = main;
@@ -43,6 +47,7 @@ namespace UI
                 {
                     string role = await apiService.GetRoleAsync(username, password);
                     main.SetUserLoggedIn(username, role);
+                    userPassword = password;
                     this.Close();
                 }
                 else
@@ -55,7 +60,10 @@ namespace UI
                 MessageBox.Show($"Error during login: {ex.Message}");
             }
         }
-
+        public string SetPassword()
+        {
+            return userPassword;
+        }
         private void SignForm_Load(object sender, EventArgs e)
         {
             shareFile.BindTextBoxEvent(this);

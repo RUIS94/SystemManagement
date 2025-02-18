@@ -35,5 +35,9 @@ namespace Model
         {
             public string?  UserName { get; set; }
         }
+        public class ActionLog
+        {
+            public string? Action { get; set; }
+        }
     }
 }

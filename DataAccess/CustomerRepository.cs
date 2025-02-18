@@ -5,17 +5,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model;
+using StackExchange.Redis;
 
 namespace DataAccess
 {
     public class CustomerRepository : BaseRepository, ICustomerRepository
     {
+        RedisHelper redis = new RedisHelper();
         public CustomerRepository() : base()
         {
         }
 
         public async Task<List<Customer>> GetAllCustomersAsync()
         {
+            string customerCacheKey = "AllCustomers";
+            var allcustomers = await redis.GetAsync<List<Customer>>(customerCacheKey);
+            if (allcustomers != null)
+            {
+                return allcustomers;
+            }
             string query = "SELECT * FROM Customers";
             DataTable table = GetData(query); 
             List<Customer> customers = new List<Customer>();
@@ -33,7 +41,7 @@ namespace DataAccess
                 }
                 customers.Add(customer);
             }
-
+            await redis.SetAsync(customerCacheKey, customers, TimeSpan.FromMinutes(1));
             return customers;
         }
 
@@ -81,7 +89,7 @@ namespace DataAccess
                 { "Email", customer.Email },
                 { "Address1", customer.Address1 },
                 { "Address2", customer.Address2 },
-                {"Notes", customer.Notes }
+                { "Notes", customer.Notes }
             };
 
             Insert("Customers", parameters); 

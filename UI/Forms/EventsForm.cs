@@ -7,24 +7,26 @@ namespace UI.Forms
 {
     public partial class EventsForm : Form
     {
-        DateTime dt = DateTime.Now;
+        DateTime _dt = DateTime.Now;
         ShareFile sf = new ShareFile();
         private readonly ApiService apiService;
         private string filePath;
         private CalendarForm cf;
-        public EventsForm()
+        //private DateTime _dt;
+        public EventsForm()//DateTime dt)
         {
             InitializeComponent();
             string rp = sf.RP();
             filePath = ($"{rp}events.txt");
             var httpClient = new HttpClient();
             apiService = new ApiService(httpClient);
+            //_dt = dt;
         }
 
         private void EventsForm_Load(object sender, EventArgs e)
         {
             LoadEventsFromFile();
-            DisplayTime(dt);
+            DisplayTime(_dt);
         }
         private void okBtn_Click(object sender, EventArgs e)
         {
@@ -44,7 +46,7 @@ namespace UI.Forms
 
         private void addBtn_Click(object sender, EventArgs e)
         {
-            string input = dt.ToString("dd/MM/yyyy - HH:mm");
+            string input = _dt.ToString("dd/MM/yyyy - HH:mm");
             if (noteBox.Text.Trim() == "")
             {
                 noteBox.Text = $"{input} (user):\n";
@@ -71,16 +73,16 @@ namespace UI.Forms
 
         private void leftLabel_Click(object sender, EventArgs e)
         {
-            ct = dt.AddDays(-1);
-            dt = ct;
+            ct = _dt.AddDays(-1);
+            _dt = ct;
             DisplayTime(ct);
             LoadEventsFromFile();
         }
         private DateTime ct;
         private void rightLabel_Click(object sender, EventArgs e)
         {
-            ct = dt.AddDays(1);
-            dt = ct;
+            ct = _dt.AddDays(1);
+            _dt = ct;
             DisplayTime(ct);
             LoadEventsFromFile();
         }
@@ -125,7 +127,7 @@ namespace UI.Forms
         {
             string summary = summaryBox.Text;
             string notes = noteBox.Text;
-            string selectedDate = dt.ToString("dd/MM/yyyy");
+            string selectedDate = _dt.ToString("dd/MM/yyyy");
 
             if (eventList.CurrentRow != null)
             {
@@ -236,7 +238,7 @@ namespace UI.Forms
             //        }
             //    }
             //}
-            string stringDt = dt.ToString("dd/MM/yyyy");
+            string stringDt = _dt.ToString("dd/MM/yyyy");
             List<Events> results = await apiService.GetEventsByDateAsync(stringDt);
             foreach (Events events in results)
             {
@@ -272,7 +274,7 @@ namespace UI.Forms
         private void calendar_DateSelected(object sender, DateRangeEventArgs e)
         {
             ct = e.End;
-            dt = ct;
+            _dt = ct;
             string dateString = ct.ToString("dd/MM/yyyy");
             dateBox.Text = dateString;
             calendar.Visible = false;

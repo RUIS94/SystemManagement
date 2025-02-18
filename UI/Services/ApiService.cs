@@ -1,6 +1,7 @@
 ﻿using Model;
 using Newtonsoft.Json;
 using System.Text;
+using System.Text.RegularExpressions;
 using static Model.DTO;
 
 namespace UI.Services
@@ -10,16 +11,27 @@ namespace UI.Services
     {
         #region Generic
         private readonly HttpClient _httpClient;
-        //private const string baseUrl = "http://localhost:8000/api";
-        private const string baseUrl = "https://localhost:7207/api";//For Development Envir
-        //private const string baseUrl = "";//add another later
+        private const string baseUrl = "http://localhost:8000/api";
+        //private const string baseUrl = "https://localhost:7207/api";//For Development Envir
+        //private const string baseUrl = "http://localhost:5000/api";//replacement api
+        private const string ApiKey = "MyKeyWillBeAddHere";
         public ApiService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            _httpClient.DefaultRequestHeaders.Add("API-KEY", ApiKey);
+        }
+
+        private void HandelApiKeyInvalid(HttpResponseMessage response)
+        {
+            if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
+            {
+                throw new UnauthorizedAccessException("Invalid Api Key, Access Rejected");
+            }
         }
         private async Task<T> GetAsync<T>(string url)
         {
             var response = await _httpClient.GetAsync(url);
+            HandelApiKeyInvalid(response);
             response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             if (typeof(T) == typeof(string))
@@ -31,8 +43,10 @@ namespace UI.Services
         private async Task<bool> PostAsync<T>(string url, T data)
         {
             var json = JsonConvert.SerializeObject(data);
+            //var encryptedData = EncryptionAndDecryption.Encrypt(json);//use encrption
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(url, content);
+            HandelApiKeyInvalid(response);
             return response.IsSuccessStatusCode;
         }
         private async Task<bool> PutAsync<T>(string url, T data)
@@ -40,11 +54,13 @@ namespace UI.Services
             var json = JsonConvert.SerializeObject(data);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PutAsync(url, content);
+            HandelApiKeyInvalid(response);
             return response.IsSuccessStatusCode;
         }
         private async Task<bool> DeleteAsync(string url)
         {
             var response = await _httpClient.DeleteAsync(url);
+            HandelApiKeyInvalid(response);
             return response.IsSuccessStatusCode;
         }
         #endregion
@@ -56,8 +72,11 @@ namespace UI.Services
         public async Task<bool> PasswordMatch(string username, string password)
         {
             string condition = $"UserName = '{username}'";
+            //string encryptPassword = EncryptionAndDecryption.Encrypt(password);
+            //string encryptCondition = EncryptionAndDecryption.Encrypt(condition);
+            //string decryptValue = EncryptionAndDecryption.Decrypt(valueToMatch);
+            //string decryptCondition = EncryptionAndDecryption.Decrypt(condition);
             var url = $"{baseUrl}/Validation/value-matches?tableName=Users&columnName=UserPassword&valueToMatch={password}&condition={condition}";
-
             return await GetAsync<bool>(url);
         }
 
@@ -429,6 +448,18 @@ namespace UI.Services
         public async Task<bool> InsertSuppOrdDetail(SuppOrdDetails suppOrdetails)
         {
             return await PostAsync($"{baseUrl}/SuppOrdDetails", suppOrdetails);
+        }
+        #endregion
+
+        #region OperationLog Api
+
+        public async Task<List<OperationLog>> GetAlllogsAsync()
+        {
+            return await GetAsync<List<OperationLog>>($"{baseUrl}/OperationLog");
+        }
+        public async Task<bool> InsertActionAsync(ActionLog log)
+        {
+            return await PostAsync($"{baseUrl}/OperationLog", log);
         }
         #endregion
     }

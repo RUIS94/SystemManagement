@@ -1,6 +1,11 @@
 ﻿using System.Diagnostics;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Text;
 using Model;
 using UI.Services;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using static Model.DTO;
 
 namespace UI
 {
@@ -9,14 +14,20 @@ namespace UI
         #region Form and Control Management
         public void SetForm(Control control, Control parent)
         {
-            control.Location = new Point(
-                (parent.Width - control.Width) / 2,
-                (parent.Height - control.Height) / 2
-            );
+            SetControlLocation(control, parent);
             parent.Controls.Add(control);
             control.Show();
             control.BringToFront();
         }
+
+        public void SetControlLocation(Control control, Control parent)
+        {
+            control.Location = new Point(
+                (parent.Width - control.Width) / 2,
+                (parent.Height - control.Height) / 2
+            );
+        }
+
         public void SetTextBoxReadOnly(Control[] controls, bool readOnly)
         {
             foreach (var control in controls)
@@ -33,7 +44,7 @@ namespace UI
             {
                 if (control is TextBox textBox)
                 {
-                    textBox.Text = String.Empty;
+                    textBox.Text = string.Empty;
                 }
             }
         }
@@ -64,10 +75,22 @@ namespace UI
             }
             else
             {
-                MessageBox.Show("Please select a row", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                WarningMessage("Please select a row");
             }
         }
-            #endregion
+        public void CloseAllControlsInPanel(Panel panel)
+        {
+            for (int i = panel.Controls.Count - 1; i >= 0;  i--)
+            {
+                if (panel.Controls[i] is Form form)
+                {
+                    form.Close();
+                    form.Dispose();
+                }
+            }
+            panel.Controls.Clear();
+        }
+        #endregion
 
         #region Data Binding and Search
 
@@ -197,6 +220,10 @@ namespace UI
         {
             return ConfirmAction(message, "Add New?");
         }
+        public void WarningMessage(string  message) 
+        {
+            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
         #endregion
 
         #region TextBox User Friendly
@@ -240,100 +267,32 @@ namespace UI
                 }
             }
         }
+        private static List<TextBox> boxList = new List<TextBox>();
+        public void RegisterBoxes(List<TextBox> boxes)
+        {
+            boxList = new List<TextBox>(boxes);
+            foreach (var tb in boxList)
+            {
+                //tb.KeyDown -= TextBox_KeyDown;
+                tb.KeyDown += TextBox_KeyDown;
+            }
+        }
+        private static void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (sender is not TextBox ctb) return;
+            int index = boxList.IndexOf(ctb);
+            if (e.KeyCode == Keys.Down && index < boxList.Count - 1)// || e.KeyCode == Keys.Tab && index < boxList.Count - 1)
+            {
+                boxList[index + 1].Focus();
+            }
+            else if (e.KeyCode == Keys.Up && index > 0)// || e.Shift && e.KeyCode == Keys.Tab)
+            {
+                boxList[index - 1].Focus();
+            }
+        }
         #endregion
 
         #region DataGridView User Friendly
-        //public void MoveToAdjacentCell(DataGridView dataGridView, int rowset = 0, int columnset = 0)
-        //{
-        //    var currentCell = dataGridView.CurrentCell;
-        //    if (currentCell != null)
-        //    {
-        //        int newRowIndex = currentCell.RowIndex + rowset;
-        //        int newColumnIndex = currentCell.ColumnIndex + columnset;
-
-        //        if (IsValidCell(dataGridView, newRowIndex, newColumnIndex))
-        //        {
-        //            dataGridView.CurrentCell = dataGridView.Rows[newRowIndex].Cells[newColumnIndex];
-        //        }
-        //    }
-        //}
-        //public void MoveToAdjacentCell(DataGridView dataGridView, int rowset = 0, int columnset = 0)
-        //{
-        //    var currentCell = dataGridView.CurrentCell;
-        //    if (currentCell != null)
-        //    {
-        //        int newRowIndex = currentCell.RowIndex + rowset;
-        //        int newColumnIndex = currentCell.ColumnIndex + columnset;
-        //        while (newColumnIndex < dataGridView.Columns.Count &&
-        //            dataGridView.Columns[newColumnIndex].ReadOnly)
-        //        {
-        //            newColumnIndex += columnset;
-        //        }
-        //        if (newColumnIndex < dataGridView.Columns.Count)
-        //        {
-        //            dataGridView.CurrentCell = dataGridView.Rows[currentCell.RowIndex].Cells[newColumnIndex];
-        //        }
-        //        //while (newColumnIndex < dataGridView.Columns.Count &&
-        //        //       dataGridView.Columns[newColumnIndex].ReadOnly)
-        //        //{
-        //        //    newColumnIndex += columnset;
-        //        //}
-        //        //if (IsValidCell(dataGridView, newRowIndex, newColumnIndex) &&
-        //        //    !dataGridView.Columns[newColumnIndex].ReadOnly)
-        //        //{
-        //        //    dataGridView.CurrentCell = dataGridView.Rows[newRowIndex].Cells[newColumnIndex];
-        //        //}
-
-        //    }
-        //}
-        //public void MoveToAdjacentCell(DataGridView dataGridView, Keys keyData)
-        //{
-        //    int currentRow = dataGridView.CurrentCell.RowIndex;
-        //    int currentColumn = dataGridView.CurrentCell.ColumnIndex;
-        //    int rowCount = dataGridView.Rows.Count;
-        //    int columnCount = dataGridView.Columns.Count;
-        //    int rowIncrement = (keyData == Keys.Up) ? -1 : (keyData == Keys.Down) ? 1 : 0;
-        //    int columnIncrement = (keyData == Keys.Left) ? -1 : (keyData == Keys.Right) ? 1 : 0;
-        //    int newRow = currentRow + rowIncrement;
-        //    int newColumn = currentColumn + columnIncrement;
-        //    while (newRow >= 0 && newRow < rowCount && newColumn >= 0 && newColumn < columnCount)
-        //    {
-        //        if (!dataGridView.Rows[newRow].Cells[newColumn].ReadOnly)
-        //        {
-        //            dataGridView.CurrentCell = dataGridView.Rows[newRow].Cells[newColumn];
-        //            return;
-        //        }
-        //        newRow += rowIncrement;
-        //        newColumn += columnIncrement;
-        //    }
-        //}
-        //public void MoveToNextEditableCell(DataGridView dataGridView)
-        //{
-        //    var currentCell = dataGridView.CurrentCell;
-        //    if (currentCell != null)
-        //    {
-        //        int nextColumnIndex = currentCell.ColumnIndex + 1;
-        //        while (nextColumnIndex < dataGridView.Columns.Count)
-        //        {
-        //            if (!dataGridView.Columns[nextColumnIndex].ReadOnly)
-        //            {
-        //                dataGridView.CurrentCell = dataGridView.Rows[currentCell.RowIndex].Cells[nextColumnIndex];
-        //                return;
-        //            }
-        //            nextColumnIndex++;
-        //        }
-        //        if (currentCell.RowIndex < dataGridView.Rows.Count - 1)
-        //        {
-        //            dataGridView.CurrentCell = dataGridView.Rows[currentCell.RowIndex + 1].Cells[0];
-        //        }
-        //        dataGridView.BeginEdit(true);
-        //    }
-        //}
-        //private bool IsValidCell(DataGridView dataGridView, int rowIndex, int columnIndex)
-        //{
-        //    return rowIndex >= 0 && rowIndex < dataGridView.Rows.Count &&
-        //           columnIndex >= 0 && columnIndex < dataGridView.Columns.Count;
-        //}
         public void MoveToAdjacentCell(DataGridView dataGridView, Keys keyData, TextBox targetTextBox)
         {
             int currentRow = dataGridView.CurrentCell.RowIndex;
@@ -477,6 +436,91 @@ namespace UI
                 UseShellExecute = true
             };
             Process.Start(info);
+        }
+        #endregion
+
+        #region User Operation Logs
+        public ActionLog RecodeAction(string message)
+        {
+            var log = new ActionLog
+            {
+                Action = message
+            };
+            return log;
+        }
+        #endregion
+
+        #region File Management
+        public string Nowtime()
+        {
+            return DateTime.Now.ToString("ddMMyyyy_HHmmss");
+        }
+        public void CheckData<T>(List<T> data)
+        {
+            if (data == null || data.Count == 0)
+            {
+                ShowMessage("Data is Null");
+                return;
+            }
+        }
+        public void CheckFile(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                ShowMessage($"{filePath} does not exists");
+            }
+        }
+        public void CreateFoler(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+        public void WriteData<T>(List<T> data, string filepath)
+        {
+            PropertyInfo[] properties = typeof(T).GetProperties();
+            using (StreamWriter writer = new StreamWriter(filepath, false, Encoding.UTF8))
+            {
+                writer.WriteLine(string.Join(",", properties.Select(p => p.Name)));
+                foreach (var item in data)
+                {
+                    var values = properties.Select(p => p.GetValue(item, null)?.ToString() ?? "");
+                    writer.WriteLine(string.Join(",", values));
+                }
+            }
+        }
+        public void ExportToCsv<T>(List<T> data, string  path, string type)
+        {
+            try
+            {
+                CheckData(data);
+                CreateFoler(path);
+                string filename = $"{type}_{Nowtime()}.csv";
+                string filepath = Path.Combine(path, filename);
+                WriteData(data, filepath);
+                ShowMessage($"file save to {path}");
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
+        public void BackuoDatabase(string sourceFile, string backupFolder)
+        {
+            try
+            {
+                CreateFoler(backupFolder);
+                string filename = Path.GetFileNameWithoutExtension(sourceFile);
+                string fileExtension = Path.GetExtension(sourceFile);
+                string backupFile = Path.Combine(backupFolder, $"{filename}_BackUp_{Nowtime()}{fileExtension}");
+                File.Copy(sourceFile, backupFile, true);
+                ShowMessage($"Backup database to {backupFolder}");
+            }
+            catch (Exception ex)
+            { 
+                HandleException(ex); 
+            }
         }
         #endregion
     }

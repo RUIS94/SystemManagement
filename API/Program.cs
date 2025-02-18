@@ -1,3 +1,4 @@
+using API;
 using Business;
 using DataAccess;
 
@@ -33,6 +34,8 @@ builder.Services.AddScoped<ISupplierOrderRepository, SupplierOrderRepository>();
 builder.Services.AddScoped<SupplierOrderService>();
 builder.Services.AddScoped<ISuppOrdDetailsRepository, SuppOrdDetailsRepository>();
 builder.Services.AddScoped<SuppOrdDetailsService>();
+builder.Services.AddScoped<IOperationLogRepository, OperationLogRepository>();
+builder.Services.AddScoped<OperationLogService>();
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -42,6 +45,9 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+//Using api key
+app.UseMiddleware<ApiKey>(); //Delete it when debug
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -49,8 +55,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseSwagger();
-//app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

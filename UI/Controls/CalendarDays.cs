@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using UI.Forms;
 using UI.Services;
 
 namespace UI.Controls
@@ -14,6 +15,7 @@ namespace UI.Controls
     public partial class CalendarDays : UserControl
     {
         private readonly ApiService apiService;
+        ShareFile sf = new ShareFile();
         public CalendarDays()
         {
             InitializeComponent();
@@ -31,12 +33,16 @@ namespace UI.Controls
             lbdays.Text = numday.ToString();
             tDay = numday;
         }
-
+        //private string selectedDay;
         private void CalendarDays_Click(object sender, EventArgs e)
         {
             isSelected = !isSelected;
             UpdateHighlight();
         }
+        //public string SelectedDay()
+        //{
+        //    return selectedDay;
+        //}
         private void UpdateHighlight()
         {
             if (isSelected)
@@ -53,7 +59,6 @@ namespace UI.Controls
             this.BackColor = Color.LightBlue;
             isSelected = true;
         }
-
         public void Deselect()
         {
             this.BackColor = Color.White;
@@ -71,6 +76,13 @@ namespace UI.Controls
         public void ShowEventLabel()
         {
             eventLabel.Visible = true;
+        }
+        private EventsForm ef;
+        private void CalendarDays_DoubleClick(object sender, EventArgs e)
+        {
+            ef = new EventsForm();
+            ef.TopLevel = false;
+            sf.SetForm(ef, Parent);
         }
     }
 }
