@@ -8,16 +8,22 @@ namespace DataAccess
 {
     public class ProductRepository : BaseRepository, IProductRepository
     {
+        RedisHelper redis = new RedisHelper();
         public ProductRepository() : base()
         {
         }
 
         public async Task<List<Product>> GetAllProductsAsync()
         {
+            string productCacheKey = "AllProducts";
+            var allProducts = await redis.GetAsync<List<Product>>(productCacheKey);
+            if (allProducts != null)
+            {
+                return allProducts;
+            }
             string query = "SELECT * FROM Products";
             DataTable table = GetData(query);
             List<Product> products = new List<Product>();
-
             foreach (DataRow row in table.Rows)
             {
                 Product product = new Product();
@@ -31,7 +37,7 @@ namespace DataAccess
                 }
                 products.Add(product);
             }
-
+            await redis.SetAsync(productCacheKey, products, TimeSpan.FromMinutes(1));
             return products;
         }
 
