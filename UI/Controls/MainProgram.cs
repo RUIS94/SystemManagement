@@ -38,6 +38,7 @@ namespace UI.Controls
             ToolsControlsPosition();
             exchangeForm.Items.Add("Home Menu" + homePanel);
             SignOut();
+            ShowLoading();
             Preload();
         }
         private void SigninConfirm()
@@ -200,41 +201,72 @@ namespace UI.Controls
         private Loading loading;
         private async void Preload()
         {
-            await Task.Run(() =>
-            {
-                LoadAndClose(custform);
-                LoadAndClose(prodform);
-                LoadAndClose(suppform);
-                LoadAndClose(userform);
-                LoadAndClose(custord);
-                LoadAndClose(suppord);
-                LoadAndClose(goodsin);
-                LoadAndClose(tasks);
-                LoadAndClose(help);
-                LoadAndClose(calendar);
-            });
+            //if (InvokeRequired)
+            //{
+            //    this.Invoke(new MethodInvoker(ShowLoading));
+            //    return;
+            //}
+            //Task.Run(() => ShowLoading());
+            await Task.Run(() => FormsLoad());
+            this.Controls.Remove(loading);
         }
-        private async void ShowLoading()
+        private void FormsLoad()
         {
-            await Task.Run(() =>
-            {
-                loading = new Loading();
-                shareFile.SetForm(loading, homePanelContainer);
-                homePanelContainer.Controls.Add(loading);
-                System.Threading.Thread.Sleep(3000);
-                homePanelContainer.Controls.Remove(loading);
-            });
+            LoadAndClose(custform);
+            LoadAndClose(prodform);
+            LoadAndClose(suppform);
+            LoadAndClose(userform);
+            LoadAndClose(custord);
+            LoadAndClose(suppord);
+            LoadAndClose(goodsin);
+            LoadAndClose(tasks);
+            LoadAndClose(help);
+            LoadAndClose(calendar);
+            LoadAndClose(wallpaper);
+            LoadAndClose(sc);
+            LoadAndClose(calcu);
+            LoadAndClose(ce);
+            Task.Delay(3000).Wait();
+            //custform = new CustomerControlForm();
+            //prodform = new ProductControlForm();
+            //suppform = new SupplierControlForm();
+            //userform = new UserControlForm();
+            //custord = new CustomerOrder();
+            //suppord = new SupplierOrder();
+            //goodsin = new GoodsReceived();
+            //tasks = new TaskMenu();
+            //help = new HelpForm();
+            //calendar = new CalendarForm();
+            //wallpaper = new WallPaperForm();
+            //sc = new smallCalendar();
+            //calcu = new Calculator();
+            //ce = new CurrencyExchange();
+            //Invoke(MethodInvoker)(() =>
+            //{
+            //    custform.Hide();
+            //});
         }
-        private async void LoadAndClose<T>(T form) where T : Form, new()
+        private void ShowLoading()
         {
-            await Task.Run(() =>
-            {
-                form = new T();
-                form.Close();
-                form.Dispose();
-            });
+            mainPanel.Enabled = false;
+            loading = new Loading();
+            shareFile.SetForm(loading, this);
+            this.ControlRemoved += (s, args) => mainPanel.Enabled = true; 
+            ////homePanelContainer.Controls.Add(loading);
+            //await Task.Delay(3000);
+            //homePanelContainer.Controls.Remove(loading);
         }
-        
+        //private void LoadAndClose<T>(T form) where T : Form, new()
+        //{
+        //    form = new T();
+        //    form.Close();
+        //    form.Dispose();
+        //}
+        private void LoadAndClose<T>(T control) where T : Control, new()
+        {
+            control = new T();
+            //control.Hide();
+        }
         #endregion
 
         #region Forms Control

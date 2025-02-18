@@ -1,6 +1,7 @@
 ﻿using Business;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Model;
 
 namespace API.Controllers
 {

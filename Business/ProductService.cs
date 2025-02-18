@@ -28,7 +28,6 @@ namespace Business
         {
             return await _productRepository.GetProductByTermAsync(searchTerm);
         }
-
         public async Task<bool> AddProductAsync(Product product)
         {
             return await _productRepository.AddProductAsync(product);

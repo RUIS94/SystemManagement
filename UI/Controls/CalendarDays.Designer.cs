@@ -64,6 +64,7 @@
             Name = "CalendarDays";
             Size = new Size(106, 79);
             Click += CalendarDays_Click;
+            DoubleClick += CalendarDays_DoubleClick;
             ResumeLayout(false);
             PerformLayout();
         }

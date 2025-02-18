@@ -66,12 +66,6 @@ namespace UI.Forms
             string code = idBox.Text.Trim();
             string name = nameBox.Text.Trim();
             OnDataSubmitted?.Invoke(code, name);
-            //if (!isCustOpen())
-            //{
-            //    qaf = new QuickAddForm();
-            //    qaf.TopLevel = false;
-            //    shareFile.SetForm(qaf, this.Parent.Parent);
-            //}
             this.Close();
         }
         private void cancelBtn_Click(object sender, EventArgs e)

@@ -42,7 +42,7 @@ namespace UI.Controls
             }
             catch (Exception ex)
             {
-                sf.ShowMessage($"Error: {ex.Message}");
+                sf.HandleException(ex);
             }
         }
         private void AppendMessage(string message, HorizontalAlignment alignment)

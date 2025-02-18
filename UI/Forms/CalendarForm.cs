@@ -23,26 +23,21 @@ namespace UI.Forms
             lastSelectedDay = null;
             var httpClient = new HttpClient();
             apiService = new ApiService(httpClient);
+            displayDays();
+            UpdateCalendarEvents();
         }
-        //public class CustomFLPanel : FlowLayoutPanel
-        //{
-        //    public CustomFLPanel()
-        //    {
-        //        this.DoubleBuffered = true;
-        //    }
-        //}
         private void CalendarForm_Load(object sender, EventArgs e)
         {
-            displayDays();
+            //displayDays();
             today_Click(sender, e);
-            UpdateCalendarEvents();
+            //UpdateCalendarEvents();
         }
         private EventsForm eventsform;
         private void addEvent_Click(object sender, EventArgs e)
         {
             if (eventsform == null || eventsform.IsDisposed)
             {
-                eventsform = new EventsForm();
+                eventsform = new EventsForm();//td);
                 eventsform.TopLevel = false;
                 shareFile.SetForm(eventsform, this);
                 eventsform.DisplayTime(td);
@@ -98,7 +93,13 @@ namespace UI.Forms
             }
             clickedDay.Select();
             lastSelectedDay = clickedDay;
+            //ShowDaySelect();
         }
+        //private void ShowDaySelect()
+        //{
+        //    CalendarDays cds = new CalendarDays();
+        //    shareFile.ShowMessage(cds.SelectedDay());
+        //}
         private void displayDays()
         {
             daycontainer.Controls.Clear();
