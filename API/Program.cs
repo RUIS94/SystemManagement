@@ -43,10 +43,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//SignalR 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 //Using api key
-app.UseMiddleware<ApiKey>(); //Delete it when debug
+//app.UseMiddleware<ApiKey>(); //Delete it when debug
+
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<ChatHub>("/chatHub");
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

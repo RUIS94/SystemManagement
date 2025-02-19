@@ -1,0 +1,120 @@
+﻿@page "/"
+@using CustomerEnd
+@using Microsoft.AspNetCore.SignalR.Client
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Chat</PageTitle>
+
+<div class="container">
+    <!-- Contact List -->
+    <div class="card mb-3">
+        <div class="d-flex justify-content-between align-items-center p-2">
+            <h3>Support</h3>
+            <span id="UnreadIndicator" class="badge bg-danger" style="display:none;">New</span>
+        </div>
+    </div>
+
+    <!-- Message List -->
+    <div>
+        @foreach (var message in Messages)
+        {
+            <div class="message" style="background-color:@(message.IsMe ? "lightblue" : "lightgray");">
+                <div class="message-text">
+                    @message.Text
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Message Window -->
+    <div class="input-group mt-3">
+        <input type="text" @bind="MessageText" class="form-control" placeholder="Enter message..." />
+        <button class="btn btn-primary" @onclick="SendMessage">Send</button>
+    </div>
+</div>
+
+@code {
+    private string MessageText { get; set; } = string.Empty;
+    private List<Message> Messages { get; set; } = new List<Message>();
+    private bool hasUnreadMessages = false;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Messages.Add(new Message { Text = "Hello! How can I assist you?", IsMe = false });
+        UpdateUnreadIndicator();
+    }
+
+    private async void ReceiveMessage(string text)
+    {
+        Messages.Add(new Message { Text = text, IsMe = false });
+        StateHasChanged();
+        hasUnreadMessages = true;
+        UpdateUnreadIndicator();
+    }
+
+    private void UpdateUnreadIndicator()
+    {
+        JSRuntime.InvokeVoidAsync("eval", "document.getElementById('UnreadIndicator').style.display = 'block';");
+    }
+
+    private async Task SendMessage()
+    {
+        if (!string.IsNullOrWhiteSpace(MessageText))
+        {
+            Messages.Add(new Message { Text = MessageText, IsMe = true });
+            MessageText = string.Empty;
+            StateHasChanged(); 
+        }
+    }
+
+    public class Message
+    {
+        public string Text { get; set; }
+        public bool IsMe { get; set; }
+    }
+}
+@* @inject NavigationManager Navigation
+@implements IAsyncDisposable
+
+@code {
+    private HubConnection hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/chatHub"))
+            .Build();
+
+        hubConnection.On<string>("ReceiveMessage", (message) =>
+        {
+            ReceiveMessage(message);
+        });
+
+        await hubConnection.StartAsync();
+    }
+
+    private void ReceiveMessage(string message)
+    {
+        Messages.Add(new Message { Text = message, IsMe = false });
+        StateHasChanged();
+    }
+
+    private async Task SendMessage()
+    {
+        if (!string.IsNullOrWhiteSpace(MessageText))
+        {
+            await hubConnection.SendAsync("SendMessage", "User", MessageText);
+            MessageText = string.Empty;
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (hubConnection is not null)
+        {
+            await hubConnection.StopAsync();
+            await hubConnection.DisposeAsync();
+        }
+    }
+} *@

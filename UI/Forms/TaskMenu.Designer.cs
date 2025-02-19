@@ -35,6 +35,7 @@
             exportFileBtn = new Button();
             logViewBtn = new Button();
             dbBackupBtn = new Button();
+            custChatBtn = new Button();
             homePanel.SuspendLayout();
             taskTabControl.SuspendLayout();
             adminTabPage.SuspendLayout();
@@ -46,47 +47,48 @@
             homePanel.Dock = DockStyle.Fill;
             homePanel.Location = new Point(0, 0);
             homePanel.Name = "homePanel";
-            homePanel.Size = new Size(784, 461);
+            homePanel.Size = new Size(784, 522);
             homePanel.TabIndex = 0;
             // 
             // taskTabControl
             // 
             taskTabControl.Controls.Add(controlTabPage);
             taskTabControl.Controls.Add(adminTabPage);
-            taskTabControl.Location = new Point(12, 12);
+            taskTabControl.Location = new Point(12, 14);
             taskTabControl.Name = "taskTabControl";
             taskTabControl.SelectedIndex = 0;
-            taskTabControl.Size = new Size(760, 437);
+            taskTabControl.Size = new Size(760, 495);
             taskTabControl.TabIndex = 0;
             // 
             // controlTabPage
             // 
-            controlTabPage.Location = new Point(4, 24);
+            controlTabPage.Location = new Point(4, 26);
             controlTabPage.Name = "controlTabPage";
             controlTabPage.Padding = new Padding(3);
-            controlTabPage.Size = new Size(752, 409);
+            controlTabPage.Size = new Size(752, 465);
             controlTabPage.TabIndex = 0;
             controlTabPage.Text = "Control";
             controlTabPage.UseVisualStyleBackColor = true;
             // 
             // adminTabPage
             // 
+            adminTabPage.Controls.Add(custChatBtn);
             adminTabPage.Controls.Add(exportFileBtn);
             adminTabPage.Controls.Add(logViewBtn);
             adminTabPage.Controls.Add(dbBackupBtn);
-            adminTabPage.Location = new Point(4, 24);
+            adminTabPage.Location = new Point(4, 26);
             adminTabPage.Name = "adminTabPage";
             adminTabPage.Padding = new Padding(3);
-            adminTabPage.Size = new Size(752, 409);
+            adminTabPage.Size = new Size(752, 465);
             adminTabPage.TabIndex = 1;
             adminTabPage.Text = "Admin";
             adminTabPage.UseVisualStyleBackColor = true;
             // 
             // exportFileBtn
             // 
-            exportFileBtn.Location = new Point(300, 39);
+            exportFileBtn.Location = new Point(300, 44);
             exportFileBtn.Name = "exportFileBtn";
-            exportFileBtn.Size = new Size(68, 70);
+            exportFileBtn.Size = new Size(68, 79);
             exportFileBtn.TabIndex = 2;
             exportFileBtn.Text = "Export Files";
             exportFileBtn.UseVisualStyleBackColor = true;
@@ -94,9 +96,9 @@
             // 
             // logViewBtn
             // 
-            logViewBtn.Location = new Point(164, 39);
+            logViewBtn.Location = new Point(164, 44);
             logViewBtn.Name = "logViewBtn";
-            logViewBtn.Size = new Size(68, 70);
+            logViewBtn.Size = new Size(68, 79);
             logViewBtn.TabIndex = 1;
             logViewBtn.Text = "View Logfile";
             logViewBtn.UseVisualStyleBackColor = true;
@@ -104,19 +106,29 @@
             // 
             // dbBackupBtn
             // 
-            dbBackupBtn.Location = new Point(34, 39);
+            dbBackupBtn.Location = new Point(34, 44);
             dbBackupBtn.Name = "dbBackupBtn";
-            dbBackupBtn.Size = new Size(68, 70);
+            dbBackupBtn.Size = new Size(68, 79);
             dbBackupBtn.TabIndex = 0;
             dbBackupBtn.Text = "Database Backup";
             dbBackupBtn.UseVisualStyleBackColor = true;
             dbBackupBtn.Click += dbBackupBtn_Click;
             // 
+            // custChatBtn
+            // 
+            custChatBtn.Location = new Point(439, 44);
+            custChatBtn.Name = "custChatBtn";
+            custChatBtn.Size = new Size(68, 79);
+            custChatBtn.TabIndex = 3;
+            custChatBtn.Text = "Chat Cust";
+            custChatBtn.UseVisualStyleBackColor = true;
+            custChatBtn.Click += custChatBtn_Click;
+            // 
             // TaskMenu
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 461);
+            ClientSize = new Size(784, 522);
             Controls.Add(homePanel);
             MaximizeBox = false;
             MinimizeBox = false;
@@ -137,5 +149,6 @@
         private Button exportFileBtn;
         private Button logViewBtn;
         private Button dbBackupBtn;
+        private Button custChatBtn;
     }
 }

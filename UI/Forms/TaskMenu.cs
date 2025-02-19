@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Model;
+using UI.Controls;
 using UI.Services;
 
 namespace UI.Forms
@@ -37,10 +38,18 @@ namespace UI.Forms
             List<OperationLog> logs = await apiService.GetAlllogsAsync();
             sf.ExportToCsv(logs, folderpath, "userOperationLogs");
         }
-        
+
         private void exportFileBtn_Click(object sender, EventArgs e)
         {
 
+        }
+        private ChatCustomer cc;
+        private void custChatBtn_Click(object sender, EventArgs e)
+        {
+            taskTabControl.Enabled = false;
+            cc = new ChatCustomer();
+            sf.SetForm(cc, this);
+            this.ControlRemoved += (s, args) => taskTabControl.Enabled = true;
         }
     }
 }
